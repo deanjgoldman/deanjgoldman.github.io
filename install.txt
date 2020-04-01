@@ -1,0 +1,73 @@
+cd blog.github.io/
+rbenv install 2.6.3
+brew update && brew upgrade ruby-build
+which ruby
+ruby -v
+gem install --user-install bundler jekyll
+echo 'export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"' >> ~/.bash_profile
+gem env
+bundle install
+gem install bundler
+mkdir site
+cd site
+git checkout --orphan gh-pages
+git branch
+git remote -v
+git status -uno
+jekyll new
+gem install jekyll
+jekyll new
+which jekyll
+bundle exec jekyll 3.8.5 new .
+vi Gemfile
+bundle exec jekyll 3.8.5 new .
+vi Gemfile
+bundle exec jekyll 3.8.5 new .
+bundle install rack
+vi Gemfile
+bundle install rack
+bundle exec jekyll 3.8.5 new .
+vi Gemfile
+bundle exec jekyll 3.8.5 new .
+bundle install jekyll (~> 3.8.5)
+bundle install jekyll # (~> 3.8.5)
+gem install jekyll
+clear
+cd ..
+rm -rf site
+jekyll -v
+jekyll new site
+gem install jekyll
+jekyll new site
+gem install -n /usr/local/bin jekyll
+jekyll new site
+clear
+ls
+cd site
+ls
+vi Gemfile
+bundle exec jekyll serve
+vi Gemfile
+bundle exec jekyll serve
+bundle install github-pages
+vi Gemfile
+bundle install github-pages
+bundle exec jekyll serve
+vi Gemfile
+bundle exec jekyll serve
+clear
+vi Gemfile
+clear
+bundle exec jekyll serve
+vi Gemfile
+vi Gemfile
+bundle update github-page
+bundle update github-pages
+
+bundle exec jekyll serve
+vi Gemfile
+gem 'github-pages'
+gem github-pages
+vi Gemfile
+bundle update jekyll
+bundle exec jekyll serve
