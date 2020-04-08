@@ -35,6 +35,9 @@ plugins:
   - jekyll-archives
   - jekyll-paginate
   - jekyll-sitemap
+# scss import
+sass:
+    sass_dir: ./_scss
 
 permalink: /:year/:month/:day/:title/
 paginate_path: /posts/:num/
