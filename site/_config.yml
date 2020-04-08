@@ -37,7 +37,7 @@ plugins:
   - jekyll-sitemap
 # scss import
 sass:
-    sass_dir: ./_scss
+    sass_dir: ./assets
 
 permalink: /:year/:month/:day/:title/
 paginate_path: /posts/:num/
