@@ -37,7 +37,7 @@ The dimensions of the inputs and outputs of this network are based off of the im
 
  The network is illustrated in the SECOND paper like so:
 
- ![SECOND Network](/assets/Understanding_SECOND/SECOND_network.png)
+ ![SECOND Network](/assets/images/Understanding_SECOND/SECOND_network.png)
 
  This blog post describes each of the network layers' Input, Output, and a description of the layers' algorithm.
 
@@ -159,7 +159,7 @@ This layer is a network of convolutional blocks for 3D tensors. The initial bloc
 As the voxels and their features enter the convolution block, they are reshaped by the convolutional filter roughly following this pattern.
 
 
-![SECOND Middle](/assets/Understanding_SECOND/SECOND_middle.png)
+![SECOND Middle](/assets/images/Understanding_SECOND/SECOND_middle.png)
 
 The pink box in the diagram is an enlarged representation of a single voxel, we'll assume its non-empty. For that pink box, it contains $$C$$, that voxel's feature extraction from the VFE layer. The middle extractor collapses the Z-dimension down to eventually form a birds-eye-view of the space, resulting in a shape $$(n, H, W, (C * D))$$
 where n is the batch size, and $$C * D$$ is size of the new voxel features within the downsampled z-dimension.

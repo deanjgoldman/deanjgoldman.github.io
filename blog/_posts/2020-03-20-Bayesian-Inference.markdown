@@ -1,4 +1,7 @@
-# Bayesian Inference
+---
+layout: post
+title: Bayesian Inference
+---
 
 Bayesian Inference derives the posterior probability of an event as a consequence of:
 
@@ -15,4 +18,5 @@ $$P(H \vert E) = \frac{P(E \vert H) * P(H)}{P(E)}$$
 Which gives us the probability of the hypothsis ($$H$$) given evidence $$E$$. What is the probability that the park will be crowded _given_ that it is a nice day?
 
 ## Run the numbers: 
-1. The prior probability that the park will be crowded when I go there. Let's call this $$0.5$$ or a $$50\%$$ chance the park will be crowded when I go there today.
+1. Lets start with the prior probability that the park will be crowded when I go there. Deciding on a probability seems like it should always be $$50\%$$, its either a "yes" or a "no", but it doesn't have to be!e
+This example has a property in common with many priors, namely, that the posterior from one problem (today's temperature) becomes the prior for another problem (tomorrow's temperature); pre-existing evidence which has already been taken into account is part of the prior and, as more evidence accumulates, the posterior is determined largely by the evidence rather than any original assumption, provided that the original assumption admitted the possibility of what the evidence is suggesting. The terms "prior" and "posterior" are generally relative to a specific datum or observation.
