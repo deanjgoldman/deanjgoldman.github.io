@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bayesian Inference</title>
+    <link rel="stylesheet" href="/assets/css/styles.scss">
+    <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Your awesome title" />
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Bayesian Inference | Your awesome title</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Bayesian Inference" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Bayesian Inference derives the posterior probability of an event as a consequence of:" />
+<meta property="og:description" content="Bayesian Inference derives the posterior probability of an event as a consequence of:" />
+<link rel="canonical" href="http://localhost:4000/2020/03/20/Bayesian-Inference.html" />
+<meta property="og:url" content="http://localhost:4000/2020/03/20/Bayesian-Inference.html" />
+<meta property="og:site_name" content="Your awesome title" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-20T00:00:00-04:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2020/03/20/Bayesian-Inference.html","headline":"Bayesian Inference","dateModified":"2020-03-20T00:00:00-04:00","datePublished":"2020-03-20T00:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2020/03/20/Bayesian-Inference.html"},"description":"Bayesian Inference derives the posterior probability of an event as a consequence of:","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css">
+    <script src="http://tikzjax.com/v1/tikzjax.js"></script>
+  </head>
+  <body>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: [
+      "MathMenu.js",
+      "MathZoom.js",
+      "AssistiveMML.js",
+      "a11y/accessibility-menu.js"
+    ],
+    jax: ["input/TeX", "output/CommonHTML"],
+    TeX: {
+      extensions: [
+        "AMSmath.js",
+        "AMSsymbols.js",
+        "noErrors.js",
+        "noUndefined.js",
+      ]
+    }
+  });
+  MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
+    var TEX = MathJax.InputJax.TeX;
+    var COLS = function (W) {
+      var WW = [];
+      for (var i = 0, m = W.length; i < m; i++)
+        {WW[i] = TEX.Parse.prototype.Em(W[i])}
+      return WW.join(" ");
+    };
+    TEX.Definitions.Add({
+      environment: {
+        psmallmatrix: ['Array',null,'(',')','c',COLS([1/3]),".2em",'S',1],
+      }
+    });
+  });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js">
+</script>
+
+    <nav>
+  
+    <a href="/" >Home</a>
+  
+    <a href="/about.html" >About</a>
+  
+    <a href="/blog.html" >Blog</a>
+  
+</nav>
+
+    <h1>Bayesian Inference</h1>
+<p>20 Mar 2020 - </p>
+
+<p>Bayesian Inference derives the posterior probability of an event as a consequence of:</p>
+
+<ol>
+  <li>
+    <p>A prior probability: A distribution of probabilty about an outcome priort to some evidence, denoted as <script type="math/tex">P(H)</script>. <script type="math/tex">P(H)</script> is the probability that park will be crowded when I go there today. It is the probability <em>prior</em> to knowing anything about evidence that may inform my probability distribution (weather, day of week, time of year, current events, etc.).</p>
+  </li>
+  <li>
+    <p>A likelihood function: A function describing the probability of an event E occuring, for a fixed probability of H occuring: <script type="math/tex">P(E \vert H)</script>. What is the probability that it was a nice day <em>given</em> that the park was crowded when I went there?</p>
+  </li>
+  <li>
+    <p>Model evidence: The probability of seeing evidence E: <script type="math/tex">P(E)</script>. What is the probability that it will be a nice day?</p>
+  </li>
+</ol>
+
+<p>This will yield the posterior probability:</p>
+
+<script type="math/tex; mode=display">P(H \vert E) = \frac{P(E \vert H) * P(H)}{P(E)}</script>
+
+<p>Which gives us the probability of the hypothsis (<script type="math/tex">H</script>) given evidence <script type="math/tex">E</script>. What is the probability that the park will be crowded <em>given</em> that it is a nice day?</p>
+
+<h2 id="run-the-numbers">Run the numbers:</h2>
+<ol>
+  <li>Lets start with the prior probability that the park will be crowded when I go there. Deciding on a probability seems like it should always be <script type="math/tex">50\%</script>, its either a “yes” or a “no”, but it doesn’t have to be!e
+This example has a property in common with many priors, namely, that the posterior from one problem (today’s temperature) becomes the prior for another problem (tomorrow’s temperature); pre-existing evidence which has already been taken into account is part of the prior and, as more evidence accumulates, the posterior is determined largely by the evidence rather than any original assumption, provided that the original assumption admitted the possibility of what the evidence is suggesting. The terms “prior” and “posterior” are generally relative to a specific datum or observation.</li>
+</ol>
+
+
+  </body>

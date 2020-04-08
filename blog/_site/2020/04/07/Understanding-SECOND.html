@@ -1,0 +1,358 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Understanding SECOND</title>
+    <link rel="stylesheet" href="/assets/css/styles.scss">
+    <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Your awesome title" />
+    <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Understanding SECOND | Your awesome title</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Understanding SECOND" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="SECOND (Sparsely Embedded CONvolutional Detection) by Andrew Dodd and Dean Goldman" />
+<meta property="og:description" content="SECOND (Sparsely Embedded CONvolutional Detection) by Andrew Dodd and Dean Goldman" />
+<link rel="canonical" href="http://localhost:4000/2020/04/07/Understanding-SECOND.html" />
+<meta property="og:url" content="http://localhost:4000/2020/04/07/Understanding-SECOND.html" />
+<meta property="og:site_name" content="Your awesome title" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-07T00:00:00-04:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/2020/04/07/Understanding-SECOND.html","headline":"Understanding SECOND","dateModified":"2020-04-07T00:00:00-04:00","datePublished":"2020-04-07T00:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2020/04/07/Understanding-SECOND.html"},"description":"SECOND (Sparsely Embedded CONvolutional Detection) by Andrew Dodd and Dean Goldman","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" type="text/css" href="http://tikzjax.com/v1/fonts.css">
+    <script src="http://tikzjax.com/v1/tikzjax.js"></script>
+  </head>
+  <body>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: [
+      "MathMenu.js",
+      "MathZoom.js",
+      "AssistiveMML.js",
+      "a11y/accessibility-menu.js"
+    ],
+    jax: ["input/TeX", "output/CommonHTML"],
+    TeX: {
+      extensions: [
+        "AMSmath.js",
+        "AMSsymbols.js",
+        "noErrors.js",
+        "noUndefined.js",
+      ]
+    }
+  });
+  MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
+    var TEX = MathJax.InputJax.TeX;
+    var COLS = function (W) {
+      var WW = [];
+      for (var i = 0, m = W.length; i < m; i++)
+        {WW[i] = TEX.Parse.prototype.Em(W[i])}
+      return WW.join(" ");
+    };
+    TEX.Definitions.Add({
+      environment: {
+        psmallmatrix: ['Array',null,'(',')','c',COLS([1/3]),".2em",'S',1],
+      }
+    });
+  });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js">
+</script>
+
+    <nav>
+  
+    <a href="/" >Home</a>
+  
+    <a href="/about.html" >About</a>
+  
+    <a href="/blog.html" >Blog</a>
+  
+</nav>
+
+    <h1>Understanding SECOND</h1>
+<p>07 Apr 2020 - </p>
+
+<h1 id="second-sparsely-embedded-convolutional-detection">SECOND (Sparsely Embedded CONvolutional Detection)</h1>
+<p><span style="font-size:12px;">by Andrew Dodd and Dean Goldman</span></p>
+
+<p>This blog post is the beginning of a project by the authors, involving several LiDAR detection algorithms, with a focus on <a href="https://github.com/jhultman/PV-RCNN">PV-RCNN</a>, which utilizes SECOND.</p>
+
+<p>This paper is targeted towards people interested in studying and applying deep learning architectures who may not have much experience reading whitepapers published on arxiv, like SECOND. This blog post walks through the SECOND paper, and attempts to reiterate each of its components in an accessible fashion.</p>
+
+<h2 id="overview">Overview:</h2>
+
+<p>SECOND is a deep learning architecture for object detection from point cloud data. The point cloud data comes from LiDAR (Light Detection And Ranging), a method of measuring light that has been pulsed outwards from a laser at a central point, reflected off the world, and bounced back into a detector at the initial central point. The SECOND model is trained on the KITTI Vision Benchmark Suite, a common open source LiDAR dataset. Each point cloud space describes a 3D space generally depicting a road with cars, cyclists, and pedestrians. It has an associated set of labels:</p>
+<ul>
+  <li>The bounding boxes of objects in the space.
+    <ul>
+      <li>The x, y, z coordinates of the object’s center.</li>
+      <li>The length (l), width (w), and depth (d) of the bounding box.</li>
+      <li>The yaw (z-axis rotation) of the bounding box.</li>
+    </ul>
+  </li>
+  <li>The classification of each object in the space
+    <ul>
+      <li>One-hot encoded variable for car, cyclist, pedestrian (or more, depending on dataset used)</li>
+    </ul>
+  </li>
+  <li>Each object’s orientation in space.
+    <ul>
+      <li>One-hot encoded variable describing the orientation of the box: Is the front of the box facing away or towards the LiDAR’s central point?</li>
+    </ul>
+  </li>
+</ul>
+
+<p>SECOND’s proposed technique takes a point cloud and goes through the following steps (each described briefly below, more detail to follow):</p>
+<ol>
+  <li><strong>Point cloud Grouping</strong>: group points into voxels (voxels can be thought of as spatial 3D grid data)</li>
+  <li><strong>Voxel Feature Extraction</strong>: process the points in each voxel to create overall voxel features</li>
+  <li><strong>Sparse Convolutional Middle Extractor</strong>: sequence of convolutional blocks (sparse convolutions are well optimized convolutions for spread out data, like car point clouds!)</li>
+  <li><strong>Region Proposal Network (RPN)</strong>: more convolutional blocks to get the desired output shape</li>
+  <li><strong>Proposal Layer</strong>: dense layers to predict the above labels</li>
+  <li><strong>Loss</strong>: Calculate classification, bounding box, direction losses</li>
+</ol>
+
+<p>Note: 
+The dimensions of the inputs and outputs of this network are based off of the implementation in the <a href="https://github.com/jhultman/PV-RCNN">PV-RCNN</a> codebase by <a href="https://github.com/jhultman">jhultman</a>.</p>
+
+<p>The network is illustrated in the SECOND paper like so:</p>
+
+<p><img src="/assets/images/Understanding_SECOND/SECOND_network.png" alt="SECOND Network" /></p>
+
+<p>This blog post describes each of the network layers’ Input, Output, and a description of the layers’ algorithm.</p>
+
+<h2 id="1-point-cloud-grouping">1. Point Cloud Grouping</h2>
+
+<h3 id="input">Input:</h3>
+<ul>
+  <li>Points</li>
+</ul>
+
+<h3 id="algorithm">Algorithm:</h3>
+<p>Given a set size of an individual voxel, iterate through the 3d space, with each step being a new voxel, and group the points within each voxel space into a tensor of points per voxel.</p>
+<ul>
+  <li>Voxel size: Size of individual voxel</li>
+  <li>Grid bounds: Boundary limit for points to include in voxel space</li>
+  <li>Max voxels: Maximum number of voxels allowed in algorithm</li>
+  <li>Max occupancy: Limit of points to include in a single voxel</li>
+</ul>
+
+<h4 id="points">Points</h4>
+<ul>
+  <li>Voxels</li>
+  <li>Matrix of points per voxel</li>
+  <li>Coordinate and number-of-voxels map</li>
+</ul>
+
+<p>Each point has an x,y,z coordinate and a reflecitivy value r.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{pmatrix}
+x_{1} & y_{1} & z_{1} & r_{1}\\
+...\\
+x_{p} & y_{p} & z_{p} & r_{p}\\
+\end{pmatrix} %]]></script>
+
+<p>p is the total number of points in the point cloud.</p>
+
+<h4 id="voxels">Voxels</h4>
+<p>Each voxel is of dimension <script type="math/tex">( Point Features * Max Occupancy )</script><br />
+In this case each point has four dimensions: an x, y, z, and reflectivity (r). Letting the maximum occupancy per voxel = 5, we’d have the following matrix representation of a voxel.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{pmatrix}
+x_{1} & y_{1} & z_{1} & r_{1}\\
+x_{2} & y_{2} & z_{2} & r_{2}\\
+x_{3} & y_{3} & z_{3} & r_{3}\\
+x_{4} & y_{4} & z_{4} & r_{4}\\
+x_{5} & y_{5} & z_{5} & r_{5}\\
+\end{pmatrix} %]]></script>
+
+<p>Since generally, point cloud data aren’t that closely clustered compared to the number of voxels being used, the voxels will generally have just one or two points in them.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{pmatrix}
+x_{1} & y_{1} & z_{1} & r_{1}\\
+0.0 & 0.0 & 0.0 & 0.0\\
+0.0 & 0.0 & 0.0 & 0.0\\
+0.0 & 0.0 & 0.0 & 0.0\\
+0.0 & 0.0 & 0.0 & 0.0\\
+\end{pmatrix} %]]></script>
+
+<p>This step also requires a data structure to hold the spatial coordinates and corresponding number of points per voxel. This map will be length <script type="math/tex">n</script>, a set maximum number of voxels.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{array}{|c|c|c|}
+\hline
+  \text{Index} & \text{Coordinates} & \text{Num Points in Voxel} \\ 
+\hline  
+   0 & (x_{0}, y_{0}, z_{0}) & 1 \\ 
+\hline
+   1 & (x_{1}, y_{1}, z_{1}) & 0 \\ 
+\hline
+   2 & (x_{2}, y_{2}, z_{2}) & 1 \\ 
+\hline
+   3 & (x_{3}, y_{3}, z_{3}) & 2 \\ 
+\hline
+   ... & ... & ... \\ 
+\hline
+   n & (x_{n}, y_{n}, z_{n}) & 1 \\ 
+\hline
+\end{array} %]]></script>
+
+<h2 id="2-voxelwise-feature-extractor-vfe">2. Voxelwise Feature Extractor (VFE)</h2>
+<h3 id="input-1">Input:</h3>
+<ul>
+  <li>Voxels with points</li>
+</ul>
+
+<h3 id="output">Output:</h3>
+<ul>
+  <li>Point-wise + voxel-wise feature extractions</li>
+</ul>
+
+<h3 id="algorithm-1">Algorithm:</h3>
+
+<p>A Fully Connected Layer (FCN) consisting of a Linear layer, Batch Normalization and ReLU layer extract point-wise features. It then uses voxel-wise max pooling to obtain an aggregated set of features per voxel. This is concatenated to the point-wise features. The final output of the FCN is a sparse 4D tensor:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{pmatrix}
+C_{0} & D_{0} & H_{0} & W_{0}\\
+& ...\\
+C_{v} & D_{v} & H_{v} & W_{v}
+\end{pmatrix} %]]></script>
+
+<p>where <script type="math/tex">C_{v}</script> is the vector of point-wise + locally aggregated feature extraction.</p>
+
+<p>A Linear layer takes as input a tensor (in this case the points per voxel) and applies a linear transformation (<script type="math/tex">y=xA^{T}+b</script>). This is equivalent to a matrix 
+multiplication where the dimensions are:</p>
+
+<script type="math/tex; mode=display">[V, P, V_{in}] * [V_{in}, U] = [V, P, U]</script>
+
+<p><script type="math/tex">V</script>: Total number of voxels<br />
+<script type="math/tex">P</script>: Total number of points<br />
+<script type="math/tex">V_{in}</script>: A vector of x,y,z coordinates and r per point, along with each coordinate relative offset w.r.t. the centroid of points in the voxel space, v. (This is just computing the mean of all point coordinates per voxel.)</p>
+
+<script type="math/tex; mode=display">[x_{i}, y_{i}, z_{i}, r_{i}, x_{i}-v_{i}, y_{i}-v_{i}, z_{i}-v_{i}]</script>
+
+<h2 id="3-sparse-convolutional-middle-extractor">3. Sparse Convolutional Middle Extractor</h2>
+<h3 id="input-2">Input:</h3>
+<ul>
+  <li>Voxel Feature Extractions</li>
+</ul>
+
+<h3 id="output-1">Output:</h3>
+<ul>
+  <li>Features from Middle Extractor: <script type="math/tex">(n, H, W, (C * D))</script></li>
+</ul>
+
+<h3 id="algorithm-2">Algorithm:</h3>
+<p>This layer is a network of convolutional blocks for 3D tensors. The initial block is of dimension <script type="math/tex">(11, 400, 352)</script> and represents the total number of potential voxels within the voxel space of the LiDAR detection (<script type="math/tex">11 * 400 * 352 = 1,548,800</script>). Out of the ~ 1.55 million voxels, there are relatively very few non-empty voxels. This is what characterizes the network as “sparse”.</p>
+
+<p>As the voxels and their features enter the convolution block, they are reshaped by the convolutional filter roughly following this pattern.</p>
+
+<p><img src="/assets/images/Understanding_SECOND/SECOND_middle.png" alt="SECOND Middle" /></p>
+
+<p>The pink box in the diagram is an enlarged representation of a single voxel, we’ll assume its non-empty. For that pink box, it contains <script type="math/tex">C</script>, that voxel’s feature extraction from the VFE layer. The middle extractor collapses the Z-dimension down to eventually form a birds-eye-view of the space, resulting in a shape <script type="math/tex">(n, H, W, (C * D))</script>
+where n is the batch size, and <script type="math/tex">C * D</script> is size of the new voxel features within the downsampled z-dimension.</p>
+
+<h2 id="4-regional-proposal-network-rpn">4. Regional Proposal Network (RPN)</h2>
+<h3 id="input-3">Input:</h3>
+<ul>
+  <li>Features from Convolution Middle Layer</li>
+</ul>
+
+<h3 id="output-2">Output:</h3>
+<ul>
+  <li>Region Proposal Features (same shape as Convolutional Middle layer Output)</li>
+</ul>
+
+<h3 id="algorithm-3">Algorithm:</h3>
+<ul>
+  <li>The RPN sends the BEV feature maps from the Middle Layer into a sequence of three 2D convolutional blocks. Each block starts with a stride-2 downsampling layer, a number of stride-1 layers in between and a <a href="https://github.com/vdumoulin/conv_arithmetic">transpose convolutional layer</a> at the end, that upsamples the tensor shape to its original dimensions. After each block, the resulting feature map is concatenated to a final feature map, and then sent into the next block.</li>
+</ul>
+
+<h2 id="5-proposal-layer">5. Proposal Layer</h2>
+<h3 id="input-4">Input:</h3>
+<ul>
+  <li>Region Proposal Features</li>
+  <li>Anchors</li>
+</ul>
+
+<h3 id="output-3">Output:</h3>
+<ul>
+  <li>Category Classification</li>
+  <li>Box Regression</li>
+  <li>Direction Classification</li>
+</ul>
+
+<h3 id="algorithm-4">Algorithm:</h3>
+<p>…</p>
+
+<h2 id="6-loss">6. Loss</h2>
+<h3 id="input-5">Input:</h3>
+<ul>
+  <li>Category Classification</li>
+  <li>Box Regression</li>
+  <li>Direction Classification</li>
+</ul>
+
+<h3 id="output-4">Output:</h3>
+<p>A combined loss for the three prediction categories.</p>
+
+<h3 id="algorithm-5">Algorithm:</h3>
+<h4 id="category-classification-loss">Category Classification Loss:</h4>
+
+<script type="math/tex; mode=display">FL(p_{t}) = -\alpha(1-p_{t})^{\gamma}log(1-p_{t})</script>
+
+<h4 id="box-regression-loss">Box Regression Loss:</h4>
+
+<script type="math/tex; mode=display">L_{\theta} = SmoothL1(sin(\theta_{p} - \theta_{t}))</script>
+
+<p>The SmoothL1 loss function (a.k.a Huber Loss) is defined as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+L_{\sigma}(a) = \begin{cases}
+  \frac{1}{2}a^{2} & \text{if} for |a| <= \sigma\\
+  \sigma(|a|-\frac{1}{2}\sigma) & \text{otherwise}
+\end{cases} %]]></script>
+
+<p>Where <script type="math/tex">a</script> is the residual, in this case: <script type="math/tex">a = sin(\theta_{p} - \theta_{t})</script></p>
+
+<h4 id="direction-classification-loss">Direction Classification Loss:</h4>
+<p>Softmax function:</p>
+
+<script type="math/tex; mode=display">S(y_{i}) = \frac{e^{y_{i}}}{\sum_{j=0}^n e^{y_{j}}}</script>
+
+<p>The Softmax function takes in a vector of length <script type="math/tex">n</script> of numbers or “logits” and outputs a vector of length <script type="math/tex">n</script> that sums to 1. In this case, <script type="math/tex">n=2</script>, to classify if the detected object is front-facing or back-facing.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>To recap, this network is a neural network used to read a set of LiDAR points to predict object locations (generally car, pedestrian, bike). This network’s general process to achieve this is grouping the points to voxels, performing VFE (making features for each voxel), passing this through some 3D convolutions (sparse feature extractor), then going through another set of convolutions (RPN) to generate classifications and bounding box proposals. From there, it can calculate loss, backpropagate and update its parameters.</p>
+
+<p>Things this blog post does not deeply dive into:</p>
+<ul>
+  <li>Implementational details</li>
+  <li>Why each specific layer was used</li>
+  <li>Performance metrics</li>
+</ul>
+
+<p>We may update this post to include more details, but for now, we hope this is a good primer before reading the paper :)</p>
+
+<p>Thanks for reading our very first blog post! Feel free to contact the authors with comments, questions, concerns, etc. We are eager to hear from our readers.</p>
+
+<h2 id="references">References:</h2>
+<p>Yan, Y.; Mao, Y; Li, B. SECOND: Sparsely Embedded Convolutional Detection. Sensors, vol. 18, no. 10, June 2018, p. 3337.</p>
+
+<p>Vasudevan, A.; Anderson, A.; Gregg, D. Parallel multi channel convolution using general matrix
+multiplication. In Proceedings of the 2017 IEEE 28th International Conference on Application-specific
+Systems, Architectures and Processors (ASAP), Seattle, WA, USA, 10–12 July 2017; pp. 19–24.</p>
+
+<p>Zhou, Y.; Tuzel, O. VoxelNet: End-to-End Learning for Point Cloud Based 3D Object Detection. arXiv 2017,
+arXiv:1711.06396.</p>
+
+
+
+  </body>
