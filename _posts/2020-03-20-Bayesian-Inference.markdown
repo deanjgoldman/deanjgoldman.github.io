@@ -1,0 +1,22 @@
+---
+layout: post
+title: Bayesian Inference
+---
+
+Bayesian Inference derives the posterior probability of an event as a consequence of:
+
+1. A prior probability: A distribution of probabilty about an outcome priort to some evidence, denoted as $$P(H)$$. $$P(H)$$ is the probability that park will be crowded when I go there today. It is the probability _prior_ to knowing anything about evidence that may inform my probability distribution (weather, day of week, time of year, current events, etc.).  
+  
+2. A likelihood function: A function describing the probability of an event E occuring, for a fixed probability of H occuring: $$P(E \vert H)$$. What is the probability that it was a nice day _given_ that the park was crowded when I went there?
+
+3. Model evidence: The probability of seeing evidence E: $$P(E)$$. What is the probability that it will be a nice day?  
+  
+This will yield the posterior probability:
+
+$$P(H \vert E) = \frac{P(E \vert H) * P(H)}{P(E)}$$
+  
+Which gives us the probability of the hypothsis ($$H$$) given evidence $$E$$. What is the probability that the park will be crowded _given_ that it is a nice day?
+
+## Run the numbers: 
+1. Lets start with the prior probability that the park will be crowded when I go there. Deciding on a probability seems like it should always be $$50\%$$, its either a "yes" or a "no", but it doesn't have to be!e
+This example has a property in common with many priors, namely, that the posterior from one problem (today's temperature) becomes the prior for another problem (tomorrow's temperature); pre-existing evidence which has already been taken into account is part of the prior and, as more evidence accumulates, the posterior is determined largely by the evidence rather than any original assumption, provided that the original assumption admitted the possibility of what the evidence is suggesting. The terms "prior" and "posterior" are generally relative to a specific datum or observation.
