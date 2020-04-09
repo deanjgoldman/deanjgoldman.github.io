@@ -161,7 +161,7 @@ As the voxels and their features enter the convolution block, they are reshaped 
 
 ![SECOND Middle](/assets/images/Understanding_SECOND/SECOND_middle.png)
 
-The pink box in the diagram is an enlarged representation of a single voxel, we'll assume its non-empty. For that pink box, it contains $$C$$, that voxel's feature extraction from the VFE layer. The middle extractor collapses the Z-dimension down to eventually form a birds-eye-view of the space, resulting in a shape $$(n, H, W, (C * D))$$
+The pink box in the diagram is an enlarged representation of a single voxel, we'll assume its non-empty. For that pink box, it contains $$C$$, that voxel's feature extraction from the VFE layer. The middle extractor collapses the Z-dimension down to eventually form a birds-eye-view of the space, resulting in a shape $$(N, (C * D), H, W)$$
 where n is the batch size, and $$C * D$$ is size of the new voxel features within the downsampled z-dimension.
 
 
