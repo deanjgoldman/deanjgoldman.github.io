@@ -3,7 +3,7 @@ layout: post
 title: Understanding SECOND
 ---
 
-# SECOND (Sparsely Embedded CONvolutional Detection)  
+## SECOND (Sparsely Embedded CONvolutional Detection)  
 <span style="font-size:12px;">by Andrew Dodd and Dean Goldman</span>
 
 
