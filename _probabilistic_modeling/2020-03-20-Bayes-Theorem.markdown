@@ -105,12 +105,3 @@ $$
 \\
 \frac{\enclose{actuarial}[mathbackground="#6ad898"]{8}}{\enclose{actuarial}[mathbackground="#6ad898"]{9}} = .8\bar{8}
 $$
-## Introducing Complexity
-
-
-### More on Prior Probability
-
-As well-stated from Wikipedia:  
-
-_This example has a property in common with many priors, namely, that the posterior from one problem becomes the prior for another problem..._
-
