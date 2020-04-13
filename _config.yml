@@ -24,8 +24,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   Blog on Data Science, etc.
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
+github_username:  dgoldman916
 
 # Build settings
 theme: minima
@@ -34,6 +33,11 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
 
+collections:
+  deep_learning:
+    output: true
+  probabilistic_modeling:
+    output: true
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to

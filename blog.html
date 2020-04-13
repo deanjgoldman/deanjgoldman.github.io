@@ -2,12 +2,32 @@
 layout: default
 title: Blog
 ---
-<h1>Latest Posts</h1>
+<h2>Deep Learning</h2>
 
 <ul>
+{% for post in site.deep_learning %}
+    <li>
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+    </li>
+{% endfor %}
+</ul>
+
+<h2>Probabilistic Modeling</h2>
+
+<ul>
+{% for post in site.probabilistic_modeling %}
+    <li>
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+    </li>
+{% endfor %}
+</ul>
+
+
+<!-- <ul>
   {% for post in site.posts %}
     <li>
       <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
     </li>
   {% endfor %}
 </ul>
+ -->
