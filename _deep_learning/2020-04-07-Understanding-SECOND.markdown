@@ -7,7 +7,7 @@ title: Understanding SECOND
 <span style="font-size:12px;">by Andrew Dodd and Dean Goldman</span>
 
 
-This blog post is the beginning of a project by the authors, involving several LiDAR detection algorithms, with a focus on [PV-RCNN](https://github.com/jhultman/PV-RCNN), which utilizes SECOND. 
+This blog post is the beginning of a project by the authors, involving several LiDAR detection algorithms, with a focus on [PV-RCNN](https://github.com/sshaoshuai/PV-RCNN), which utilizes SECOND. 
 
 This paper is targeted towards people interested in studying and applying deep learning architectures who may not have much experience reading whitepapers published on arxiv, like SECOND. This blog post walks through the SECOND paper, and attempts to reiterate each of its components in an accessible fashion. 
 
