@@ -1,8 +1,12 @@
 ---
 layout: default
 ---
-<h1>{{ page.title }}</h1>
-<p>{{ page.date | date_to_string }} - {{ page.author }}</p>
-<p>
-{{ content }}
+<h1 style="text-align:center;">
+  {{ page.title }}
+</h1>
+<p style="text-align:center;">
+  {{ page.date | date_to_string }} - {{ page.author }}
+</p>
+<p style="margin-top: 50px;">
+  {{ content }}
 </p>
