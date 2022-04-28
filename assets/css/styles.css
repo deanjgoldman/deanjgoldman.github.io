@@ -1,0 +1,150 @@
+@font-face {
+  font-family: 'OfficeTimesRound-Regular';
+  src:  url('/assets/fonts/OfficeTimesRound-Regular.woff2') format('woff2'),
+  		url('/assets/fonts/OfficeTimesRound-Regular.woff') format('woff'),
+  		url('/assets/fonts/OfficeTimesRound-Regular.otf') format('opentype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OfficeTimesSharp-Regular';
+  src:  url('/assets/fonts/OfficeTimesSharp-Regular.otf') format('opentype');
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'RobotoSlab-Light';
+  src:  url('/assets/fonts/RobotoSlab-Light.ttf');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RobotoSlab-Regular';
+  src:  url('/assets/fonts/RobotoSlab-Regular.ttf');
+  font-style: normal;
+}
+
+
+nav {
+	font-family: 'OfficeTimesSharp-Regular';
+	font-size: 28px;
+	color: #1a1a1a;
+	word-spacing: 4px;
+}
+
+a {
+	text-decoration: none;
+}
+a:visited {
+	color: #1a1a1a;
+}
+
+html {
+	background-color: #fdfdfd;
+}
+
+body {
+	font-family: 'OfficeTimesSharp-Regular';
+	font-size: 18px;
+	color: #1a1a1a;
+	line-height: 160%;
+}
+
+.top {
+	position: absolute;
+	z-index: 1;
+	margin-top:100px;
+	margin-left: 250px;
+	margin-right: 250px;
+}
+
+#page-title {
+	margin-bottom: 30px;
+	letter-spacing: 1px;
+}
+
+.content {
+	position: absolute;
+	z-index: 1;
+	margin-top:150px;
+	margin-left: 250px;
+	margin-right: 250px;
+	letter-spacing: 0.1px;
+}
+
+/*Spacing for block equations*/
+mjx-mtable {
+	margin-top:3px;
+	line-height: 50%;
+	margin-bottom:3px;
+}
+
+/*Blog menu*/
+.blog-list-item {
+	margin-bottom: 20px;
+}
+
+.blog-list-item-title {
+	font-size: 24px;
+	margin-bottom: -10px;
+}
+
+.blog-list-item-subtext {
+	font-size: 17.5px;
+	color: #3a3a3a;
+}
+
+.post-header {
+	text-align: center;
+	margin-top: 17px;
+	margin-bottom: 33px;
+}
+
+.home1 {
+	color: #1a1a1a;
+	left: 71%;
+	right: 4%;
+	top: 12%;
+	position: fixed;
+	background-color: transparent;
+}
+
+.home2 {
+	color: #1a1a1a;
+	left: 71%;
+	right: 4%;
+	top: 37%;
+	position: fixed;
+	text-align: justify;
+	background-color: transparent;
+}
+
+.home3 {
+	color: #4a4a4a;
+	left: 71%;
+	right: 4%;
+	bottom: 8%;
+	position: fixed;
+	text-align: justify;
+	background-color: transparent;
+}
+
+.footer {
+	font-size: 17.5px;
+	color: #4a4a4a;
+	line-height: 175%;
+}
+
+.footer-link:visited {
+	font-size: 17.5px;
+	color: #4a4a4a;
+	line-height: 175%;
+}
+
+#canvas-water {
+	position:  absolute;
+	width:  300%;
+	overflow:  hidden;
+	height:  100%;
+}
