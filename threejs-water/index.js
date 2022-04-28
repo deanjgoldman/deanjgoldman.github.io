@@ -37,7 +37,7 @@ loadFile('threejs-water/shaders/utils.glsl').then((utils) => {
   THREE.ShaderChunk['utils'] = utils;
 
   // Create Renderer
-  const camera = new THREE.PerspectiveCamera(45, (width / height), 0.01, 100);
+  const camera = new THREE.PerspectiveCamera(35, (width / height), 0.01, 100);
   camera.position.set(0,1,0); // overhead
   
   const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true});

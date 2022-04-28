@@ -30,6 +30,7 @@ nav {
 	font-family: 'OfficeTimesSharp-Regular';
 	font-size: 28px;
 	color: #1a1a1a;
+	z-index: 2;
 	word-spacing: 4px;
 }
 
@@ -52,11 +53,11 @@ body {
 }
 
 .top {
-	position: absolute;
-	z-index: 1;
-	margin-top:100px;
-	margin-left: 250px;
-	margin-right: 250px;
+	position: static;
+	z-index: 2;
+	margin-top: 6%;
+	margin-left: 20%;
+	margin-right: 20%;
 }
 
 #page-title {
@@ -67,7 +68,7 @@ body {
 .content {
 	position: absolute;
 	z-index: 1;
-	margin-top:150px;
+	margin-top:50px;
 	margin-left: 250px;
 	margin-right: 250px;
 	letter-spacing: 0.1px;
@@ -101,33 +102,16 @@ mjx-mtable {
 	margin-bottom: 33px;
 }
 
-.home1 {
+.home {
 	color: #1a1a1a;
 	left: 71%;
 	right: 4%;
 	top: 12%;
-	position: fixed;
+	position: absolute;
+	overflow-y: visible;
+	height: 100%;
 	background-color: transparent;
-}
-
-.home2 {
-	color: #1a1a1a;
-	left: 71%;
-	right: 4%;
-	top: 37%;
-	position: fixed;
-	text-align: justify;
-	background-color: transparent;
-}
-
-.home3 {
-	color: #4a4a4a;
-	left: 71%;
-	right: 4%;
-	bottom: 8%;
-	position: fixed;
-	text-align: justify;
-	background-color: transparent;
+	z-index: 1;
 }
 
 .footer {
@@ -143,8 +127,9 @@ mjx-mtable {
 }
 
 #canvas-water {
-	position:  absolute;
-	width:  300%;
+	position:  fixed;
+	width:  100%;
 	overflow:  hidden;
 	height:  100%;
+	z-index: -1;
 }

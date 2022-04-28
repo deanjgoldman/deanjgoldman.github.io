@@ -10,11 +10,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/three@v0.113.0/examples/js/controls/TrackballControls.js"></script>
 
     <style type="text/css">
-      a { color: inherit; cursor: pointer; }
-      img { display: none; }
       canvas { position: absolute; top: 0; left: 0; right: 0; }
-      #loading { position: center; left: 0; top: 0%; right: 0; text-align: center; margin-top: 0; }
-      #help { position: center; top: 0; right: 0; bottom: 0; width: 0; padding-right: 0; overflow: auto; }
     </style>
 
     <title>{{ page.title }}</title>
@@ -30,13 +26,29 @@
     {% include mathjax.html %}  
   </div>
 
-  <div class='content'>
-
-    {{ content }}
+  <div class='home'>
+    <p>
+    This website is a blog/portfolio of my research into:
+    </p>
+    <ul>
+    <li>- Data Science, Modeling, Artificial Intelligence</li>
+    <li>- Computer Science, Data Structures, Algorithms</li>
+    <li>- Probability, Statistics</li>
+    <li>- Calculus, Linear Algebra</li>
+    </ul>
+    </br>
+    <p>
+    I write a blog to practice writing, share projects, and improve my understanding of ideas in data science. If you find any of my work or writing interesting, or have inquiries, I would be glad to hear from you (first name j last name at g mail).
+    </p>  
+    <p>
+      I currently work as an AI engineer. I am working towards a graduate degree in data science.
+    </p>
+    </br>
+    <p style='color: #4a4a4a;'>
+      Disclaimer: In these blog posts, I attempt to make as precise explanations as I can. However, it's possible that something I've written contains errors or lacks accuracy. Please be sure to consider your own evaluation of what is true when you read. If you are reading this blog and notice an error or incorrect explanation, you are welcome to inform me.
+    </p>
   </div>
 
-    <div id="loading">Loading...</div>
-    <div id="help"></div>
     <canvas id="canvas-water"></canvas>
 
     <script type="text/javascript" src="threejs-water/index.js"></script>
