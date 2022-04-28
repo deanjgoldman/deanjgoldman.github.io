@@ -7,13 +7,15 @@
       "a11y/accessibility-menu.js"
     ],
     jax: ["input/TeX", "output/CommonHTML"],
+    displayAlign: "left",
     TeX: {
       extensions: [
         "AMSmath.js",
         "AMSsymbols.js",
         "noErrors.js",
         "noUndefined.js",
-      ]
+      ],
+      equationNumbers: { autoNumber: "AMS", tagside: "right" },
     }
   });
   MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
@@ -30,6 +32,15 @@
       }
     });
   });
+  MathJax.Hub.Register.StartupHook("TeX AMSmath Ready", function () {
+    MathJax.InputJax.TeX.Stack.Item.AMSarray.Augment({
+      clearTag() {
+        if (!this.global.notags) {
+          this.super(arguments).clearTag.call(this);
+        }
+      }
+    });
+  })
 </script>
 <script type="text/javascript" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">

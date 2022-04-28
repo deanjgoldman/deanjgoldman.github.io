@@ -8,13 +8,26 @@
     {% seo %}
   </head>
   <body>
+
   <div class='top'>
     {% include navigation.html %}
     {% include mathjax.html %}
   </div>
+
   <div class='content'>
+    
+    <h1 id='page-title'> Blog </h1>
     {{ content }}
+
+      {% for post in site.posts %}
+      <div class='blog-list-item'>
+          <p class='blog-list-item-title'><a href="{{ post.url }}">{{ post.date | date_to_string  }} - {{ post.title }}</a></p>
+          <p class='blog-list-item-subtext'>{{ post.subtext }}</p>
+      </div>
+      {% endfor %}
   </div>
+
+  
 
 
   </body>
