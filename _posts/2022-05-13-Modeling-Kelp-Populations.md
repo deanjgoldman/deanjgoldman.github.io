@@ -653,7 +653,9 @@ A good starting point for analysis is to compute the empirical statistics of kel
 </div>
 <br/>
 
-From the sample statistics, we can see that assumptions of a Poisson (average rate $$\lambda$$ equals varaiance) are violated. In this case, $$\lambda$$ is much closer to the standard deviation than the variance. This is explained by the fact that that most sites tend have a good number of outlier counts, meaning that in some quadrats there were a relatively high number of kelp observations made. We can still move forward with the Poisson analysis, but this is an important observation to flag, and probably deserves its own accounting for in future modeling. 
+From the sample statistics, we can see that assumptions of a Poisson (average rate $$\lambda$$ equals varaiance) are violated. In this case, $$\lambda$$ is much closer to the standard deviation than the variance. This is explained by the fact that that most sites are zero-inflated and tend have a good number of outlier counts, meaning that in some quadrats there were a relatively high number of kelp observations made. We can still move forward with the Poisson analysis, but this is an important observation to flag, and probably deserves its own accounting for in future modeling.  
+<br/>
+If we move forward with our analysis, we do see that the average rate of kelp observations tends to go down year over year in several sites (e.g. Baker North, Baker South, and Nahant). This is a good starting point for a hypothesis test  to determine whether or not this apparant decline is actually a statistically significant decay in terms of the population as a Poisson process. 
 
 
 ## Parameterizing the Model
