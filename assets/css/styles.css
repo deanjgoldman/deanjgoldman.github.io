@@ -121,6 +121,12 @@ mjx-mtable {
 	z-index: 1;
 }
 
+.footer-link {
+	font-size: 17.5px;
+	color: #4a4a4a;
+	line-height: 175%;
+}
+
 .footer-link:visited {
 	font-size: 17.5px;
 	color: #4a4a4a;
