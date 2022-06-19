@@ -39,7 +39,7 @@ $$L(W) = (m+n)R(W) = \frac{(m+n)}{2} \text{log}_{2} \text{det}(I + \frac{n}{m\ep
 
 
 
-I'll make an attempt to explain this formula as best as I can, but I could be wrong, and certainly am leaving some of the full explanation out. The determinant expresses the volume of an n-dimensional parallelepiped (in this case the covariance matrix) in units of $$\epsilon$$-spheres. The $$\text{log}_{2}$$ element comes from the fact that we're making a binary encoding of those spheres. E.g. coding four $$\epsilon$$-spheres would require only two bits (00, 01, 10, 11), so $$\text{log}_{2}4 = 2$$ bits. And the $$\frac{1}{2}$$ is a consequence the differential entropy of a normal distribution, which is a component in the proof of the rate distortion theorem [3].  
+I'll make an attempt to briefly explain this formula as best as I can, but some parts may be imprecise, and I certainly out details. The determinant expresses the volume of an n-dimensional parallelepiped (in this case the covariance matrix) in units of $$\epsilon$$-spheres. The $$\text{log}_{2}$$ element comes from the fact that we're making a binary encoding of those spheres. E.g. coding four $$\epsilon$$-spheres would require only two bits (00, 01, 10, 11), so $$\text{log}_{2}4 = 2$$ bits. And the $$\frac{1}{2}$$ is a consequence the differential entropy of a normal distribution, which is a component in the proof of the rate distortion theorem [3].  
 <br/>
 We now have a function $$L(W)$$ that will tell us the total number of bits needed to encode a set of vectors. What the MCR$$^2$$ paper goes on to propose is that a good representation $$Z$$ of $$X$$ should be one in which partitioning $$Z$$ by class membership should result in a set of partitions $$\Pi$$, whose sum coding rate is smaller than that of $$Z$$. This is to say all within-class partitions should have a smaller coding rate, relative to between-class partitions. What this theoretical minimum would require is that the partitions would be highly correlated within-class, but maximally incoherent between-class. If it were otherwise, the between-class coding rate would drop, meaning that the feature space would be treating two classes similarly and would thus be less effective at drawing a classification boundary. To enforce this goal, the MCR$$^2$$ objective function is to find a maximum (equation 8 in [1]):
 
@@ -48,17 +48,58 @@ $$
 \max_{\theta, \Pi} \Delta R(Z(\theta), \Pi, \epsilon) = R(Z(\theta), \epsilon) - R^{c}(Z(\theta), \epsilon, \vert \text{ } \Pi), \text{    s.t.    } \vert\vert\text{ } Z_{j}(\theta) \text{ }\vert\vert_{F}^{2} = m_{j},\text{ } \Pi \in \Omega
 $$
 
+Hypothetically, if a set of $$n$$ vectors belonging to $$k$$ classes were mixed together in a more or less undifferentiated distribution, $$R(Z)$$ would be relatively high, as each element in the sum $$R^{c}(Z)$$ would be close to $$R(Z)$$. As the classes become more linearly separable, $$R^{c}(Z)$$ would decrease, and the loss function should tend downward. In order to test this hypothesis, I wrote a program to generate random samples for $$n$$ classes with distinct gaussian distributions spanning $$d$$ dimensions. Depending on the parameters, the gaussians will have more or less noise, and will have more or less label corruption. In my program, the sampler throttles these two parameters such that in the first iteration the distribution is not class-wise differentiable, and in the last it's near perfectly separable.  
+<br/>
+<div style="text-align: center;">
+<img src="/assets/images/mcr2-01-scatter-plot.png" width=800>
+<figcaption class="footer">Randomly generated multivariate Gaussians with throttled sigma and label corruption.</figcaption>
+</div>
+<br/> 
+
+Another element in my program is the parameterization of the number of classes, number of dimensions, and the addition of perturbations to each classes Gaussian. 
+
+<br/>
+<div style="text-align: center;">
+<img src="/assets/images/mcr2-03-scatter-plot.png" width=800>
+<figcaption class="footer">Simulation of 16 distinct classes, each with a second gaussian centroid, in order to simulate classes that may span across multiple subspaces of an embedding space.</figcaption>
+</div>
+<br/> 
+
 This has some similarity to Fisher's Linear Discriminant, which is simply the ratio of between-class variance and within-class variance:
 
 $$
 J(W) = \frac{S_{W}}{S_{B}} = \frac{\sum_{k=1}^{K}\sum_{n \in C_{k}}(y_{n}-\mu_{k})(y_{n}-\mu_{k})^T}{\sum_{k=1}^{K}N_{k}(\mu_{k}-\mu)(\mu_{k}-\mu)^T}
 $$
 
-It seems like a natural next step to compare the two. For this particular excercise, I decided to simulate some data points in clusters of multivariate normal distributions, with a range of different parameter values. This way, I could perturb the clusters one way or another, and inspect the effect on either loss function.  
+It seems like a natural next step to compare the two. For this particular excercise, I decided to simulate some data points in clusters of multivariate normal distributions, with a range of different parameter values. This way, I could perturb the clusters one way or another, and inspect the effect on either loss function.
 
-Between vs. within
+<br/>
+<div style="text-align: center;">
+<img src="/assets/images/mcr2-01-8-1-5.png" width=800>
+<figcaption class="footer"></figcaption>
+</div>
+<br/>
+<div style="text-align: center;">
+<img src="/assets/images/mcr2-01-8-2-5.png" width=800>
+<figcaption class="footer"></figcaption>
+</div>
+<br/>
+<div style="text-align: center;">
+<img src="/assets/images/mcr2-01-8-3-5.png" width=800>
+<figcaption class="footer"></figcaption>
+</div>
+<br/>
+<div style="text-align: center;">
+<img src="/assets/images/mcr2-01-8-4-5.png" width=800>
+<figcaption class="footer"></figcaption>
+</div>
+<br/>
+<div style="text-align: center;">
+<img src="/assets/images/mcr2-01-8-15-5.png" width=800>
+<figcaption class="footer"></figcaption>
+</div>
 
-
+ 
 
  
 
