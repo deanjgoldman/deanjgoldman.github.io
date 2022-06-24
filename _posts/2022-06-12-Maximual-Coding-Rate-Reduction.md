@@ -78,8 +78,21 @@ I(X; \hat{X}) &\ge h(X) - h(X-\hat{X})
 \tag{6}
 $$
 
-This gives us a lower bound to the mutual information $$I(X; \hat{X})$$. The two terms on the right side of the equation end up making the difference between a Gaussian with a $$\sigma^{2}$$ term, representing the entropy of $$X$$, and a Gaussian with a variance term representing the distortion $$D = \mathbb{E}(X-\hat{X})^{2}$$, representing the entropy of $$X-\hat{X}$$, or what is lost in the encoding. 
+Since the entropy of a Gaussian is known to be: $$\frac{1}{2}\text{log}(2\pi e )\sigma^{2}$$, we can substitute this into the lower bound (this is equation 10.31 in [3]):
 
+$$
+I(X; \hat{X}) = \frac{1}{2}\text{log}(2\pi e )\sigma^{2} - \frac{1}{2}\text{log}(2\pi e )\text{D}
+\tag{7}
+$$
+
+The two terms on the right side of the equation end up making the difference between a Gaussian with a $$\sigma^{2}$$ term, representing the entropy of $$X$$, and a Gaussian with a variance term representing the distortion $$D = \mathbb{E}(X-\hat{X})^{2}$$, representing the entropy of $$X-\hat{X}$$, or what is lost in the encoding.  
+
+Since this is essentially a measurement of what is lost in the encoding, $$I(X; \hat{X})$$ gives a lower bound to the Rate Distortion (equation 10.33 in [3]):  
+
+$$
+R(D) \ge \frac{1}{2} \text{log} \frac{\sigma^{2}}{D}
+\tag{8}
+$$
 
 <br/>
 We now have a function $$L(W)$$ that will tell us the total number of bits needed to encode a set of vectors. What the MCR$$^2$$ paper goes on to propose is that a good representation $$Z$$ of $$X$$ should be one in which partitioning $$Z$$ by class membership should result in a set of partitions $$\Pi$$, whose sum coding rate is smaller than that of $$Z$$. This is to say all within-class partitions should have a smaller coding rate, relative to between-class partitions. What this theoretical minimum would require is that the partitions would be highly correlated within-class, but maximally incoherent between-class. If it were otherwise, the between-class coding rate would drop, meaning that the feature space would be treating two classes similarly and would thus be less effective at drawing a classification boundary. To enforce this goal, the MCR$$^2$$ objective function is to find a maximum (equation 8 in [1]):
@@ -87,21 +100,21 @@ We now have a function $$L(W)$$ that will tell us the total number of bits neede
 
 $$
 \max_{\theta, \Pi} \Delta R(Z(\theta), \Pi, \epsilon) = R(Z(\theta), \epsilon) - R^{c}(Z(\theta), \epsilon, \vert \text{ } \Pi), \text{    s.t.    } \vert\vert\text{ } Z_{j}(\theta) \text{ }\vert\vert_{F}^{2} = m_{j},\text{ } \Pi \in \Omega
-\tag{7}
+\tag{9}
 $$
 
 Or alternativelly a minimum:
 
 $$
 \min_{\theta, \Pi} \Delta R(Z(\theta), \Pi, \epsilon) = - R(Z(\theta), \epsilon) + R^{c}(Z(\theta), \epsilon, \vert \text{ } \Pi), \text{    s.t.    } \vert\vert\text{ } Z_{j}(\theta) \text{ }\vert\vert_{F}^{2} = m_{j},\text{ } \Pi \in \Omega
-\tag{8}
+\tag{10}
 $$
 
 Hypothetically, if a set of $$n$$ vectors belonging to $$k$$ classes were mixed together in a more or less undifferentiated distribution, $$R(Z)$$ would be relatively high, as each element in the sum $$R^{c}(Z)$$ would be close to $$R(Z)$$. As the classes become more linearly separable, $$R^{c}(Z)$$ would decrease, and the loss function should tend downward. This kind of behavior has some similarity to Fisher's Linear Discriminant, which is just the ratio of between-class variance and within-class variance:
 
 $$
 J(W) = \frac{S_{W}}{S_{B}} = \frac{\sum_{k=1}^{K}\sum_{n \in C_{k}}(y_{n}-\mu_{k})(y_{n}-\mu_{k})^T}{\sum_{k=1}^{K}N_{k}(\mu_{k}-\mu)(\mu_{k}-\mu)^T}
-\tag{9}
+\tag{11}
 $$
 
 So it seems like a natural next step to compare MCR$$^2$$ with FLD. As a third point of comparison, this experiment tracks the difference of within class minus between class L2-norms. For consistency with how MCR$$^2$$ is implemented, I use a difference rather than a ratio for computing the FLD and L2 loss:
@@ -109,13 +122,13 @@ So it seems like a natural next step to compare MCR$$^2$$ with FLD. As a third p
 
 $$
 L_{FLD}(W) = S_{W} - S_{B}
-\tag{10}
+\tag{12}
 $$
 
 
 $$
 L_{L2}(q, p) = d(q_{W}, p_{W}) - d(q_{B}, p_{B}) = \sum_{k=1}^{K}\sum_{i \in C_{k}}\sqrt{(q_{i}-p_{i})^{2}} - \sum_{i=1}^{N}\sqrt{(q_{i}-p_{i})^{2}}
-\tag{11}
+\tag{13}
 $$
 
 ## Simulating Latent Space Representations
