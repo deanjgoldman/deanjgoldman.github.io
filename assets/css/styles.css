@@ -133,10 +133,35 @@ mjx-mtable {
 	line-height: 175%;
 }
 
+.note {
+	text-align: center;
+	font-size: 17.5px;
+	color: #4a4a4a;
+	line-height: 175%;
+	z-index: 1;
+	overflow-x: wrap
+}
+
 #canvas-water {
 	position:  fixed;
 	width:  100%;
 	overflow:  hidden;
 	height:  100%;
 	z-index: -1;
+}
+
+/* side-by-side images */
+.column {
+  float: left;
+}
+
+.row {
+  white-space: nowrap;
+  overflow-x:scroll;
+  overflow-y:hidden;
+}
+
+.row::after {
+	clear: both;
+  content: "";
 }
