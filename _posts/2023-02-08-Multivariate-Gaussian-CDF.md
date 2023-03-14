@@ -32,7 +32,7 @@ One thing to note though is that the coordinates in this 2d space are discrete, 
 
 $$r^2 = (x-\mu)^T\Sigma^{-1}(x-\mu)$$
 
-Reading the definitoion of the Mahalanobis distance, its use seems completely appropriate:
+Reading the definition of the Mahalanobis distance, its use seems completely appropriate:
   
 <br/>
 _The Mahalanobis distance is a measure of the distance between a point P and a distribution D, introduced by P. C. Mahalanobis in 1936 [1]._  
