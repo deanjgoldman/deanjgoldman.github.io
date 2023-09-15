@@ -153,8 +153,11 @@ It was fun to dive into a pretty dense equation like a multivariate Gaussian pdf
 
 # References
 
+{: .footer}
 [1] Mahalanobis, Prasanta Chandra (1936). "On the generalised distance in statistics". Proceedings of the National Institute of Sciences of India. 2 (1): 49–55. Retrieved 2016-09-27.
-
-[2]  Weisstein, Eric W. "Bivariate Normal Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/BivariateNormalDistribution.html 
-
+  
+{: .footer}
+[2]  Weisstein, Eric W. "Bivariate Normal Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/BivariateNormalDistribution.html
+  
+{: .footer}
 [3]  Weisstein, Eric W. "Chi-Squared Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/Chi-SquaredDistribution.html 
