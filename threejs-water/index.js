@@ -1,16 +1,43 @@
 const canvas = document.getElementById('canvas-water');
 
-// resize the canvas to fill browser window dynamically
-window.addEventListener('resize', resizeCanvas, false);
-      
+let camera, renderer, controls;
+let lastDPR = window.devicePixelRatio;
+
+// resize the canvas to fill browser window dynamically, and keep
+// the renderer/camera/controls in sync so the water doesn't stretch.
+// Browser zoom also fires a 'resize' event (innerWidth/innerHeight
+// change in CSS px) but changes devicePixelRatio too — a real window
+// resize at a fixed zoom level does not. Use that to ignore zoom.
 function resizeCanvas() {
-  // canvas.width = document.documentElement.clientWidth;
-  // canvas.height = document.documentElement.clientHeight;
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-            
+  const currentDPR = window.devicePixelRatio;
+  if (Math.abs(currentDPR - lastDPR) > 0.001) {
+    lastDPR = currentDPR;
+    return;
+  }
+
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  canvas.width = w;
+  canvas.height = h;
+
+  if (renderer) renderer.setSize(w, h, false);
+  if (camera) {
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  if (controls) {
+    controls.screen.width = w;
+    controls.screen.height = h;
+  }
 }
-  
+
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(resizeCanvas, 100);
+}, false);
+
 resizeCanvas();
 
 var width = canvas.width;
@@ -37,10 +64,10 @@ loadFile('threejs-water/shaders/utils.glsl').then((utils) => {
   THREE.ShaderChunk['utils'] = utils;
 
   // Create Renderer
-  const camera = new THREE.PerspectiveCamera(35, (width / height), 0.01, 100);
+  camera = new THREE.PerspectiveCamera(35, (width / height), 0.01, 100);
   camera.position.set(0,1,0); // overhead
   
-  const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true});
+  renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true});
   renderer.setSize(width, height);
   renderer.autoClear = false;
 
@@ -49,7 +76,7 @@ loadFile('threejs-water/shaders/utils.glsl').then((utils) => {
 
 
   // Create mouse Controls
-  const controls = new THREE.TrackballControls(
+  controls = new THREE.TrackballControls(
     camera,
     canvas
   );
