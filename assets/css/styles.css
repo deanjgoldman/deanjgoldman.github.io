@@ -114,6 +114,14 @@ mjx-mtable {
 	z-index: 1;
 }
 
+@media (max-width: 768px) {
+	.home {
+		left: 5%;
+		right: 5%;
+		top: 8%;
+	}
+}
+
 .footer {
 	font-size: 17.5px;
 	color: #4a4a4a;
