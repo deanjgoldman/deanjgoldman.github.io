@@ -1,10 +1,20 @@
 const canvas = document.getElementById('canvas-water');
 
 let camera, renderer, controls;
+let lastDPR = window.devicePixelRatio;
 
 // resize the canvas to fill browser window dynamically, and keep
-// the renderer/camera/controls in sync so the water doesn't stretch
+// the renderer/camera/controls in sync so the water doesn't stretch.
+// Browser zoom also fires a 'resize' event (innerWidth/innerHeight
+// change in CSS px) but changes devicePixelRatio too — a real window
+// resize at a fixed zoom level does not. Use that to ignore zoom.
 function resizeCanvas() {
+  const currentDPR = window.devicePixelRatio;
+  if (Math.abs(currentDPR - lastDPR) > 0.001) {
+    lastDPR = currentDPR;
+    return;
+  }
+
   const w = window.innerWidth;
   const h = window.innerHeight;
 
