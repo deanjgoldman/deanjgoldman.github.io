@@ -60,7 +60,6 @@ Promise.all([
   camera.position.z = 1;
 
   const tiles = new THREE.TextureLoader().load('threejs-water/tiles.jpg');
-  tiles.wrapS = tiles.wrapT = THREE.RepeatWrapping;
 
   uniforms = {
     uTime: { value: 0 },
@@ -93,10 +92,36 @@ Promise.all([
     uniforms.uRippleCount.value = Math.min(rippleHead, MAX_RIPPLES);
   }
 
-  canvas.addEventListener('mousedown', (e) => addRipple(e.clientX, e.clientY));
+  let isDragging = false;
+  let lastDragRipple = 0;
+  const DRAG_THROTTLE_MS = 80;
+
+  function maybeAddDragRipple(clientX, clientY) {
+    const now = performance.now();
+    if (now - lastDragRipple < DRAG_THROTTLE_MS) return;
+    lastDragRipple = now;
+    addRipple(clientX, clientY);
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    addRipple(e.clientX, e.clientY);
+  });
+  canvas.addEventListener('mousemove', (e) => {
+    if (isDragging) maybeAddDragRipple(e.clientX, e.clientY);
+  });
+  window.addEventListener('mouseup', () => { isDragging = false; });
+
   canvas.addEventListener('touchstart', (e) => {
+    isDragging = true;
     for (const touch of e.changedTouches) addRipple(touch.clientX, touch.clientY);
   }, {passive: true});
+  canvas.addEventListener('touchmove', (e) => {
+    if (isDragging) {
+      for (const touch of e.changedTouches) maybeAddDragRipple(touch.clientX, touch.clientY);
+    }
+  }, {passive: true});
+  window.addEventListener('touchend', () => { isDragging = false; });
 
   // seed a couple of ripples so the surface isn't static on load
   addRipple(window.innerWidth * 0.35, window.innerHeight * 0.4);
