@@ -55,7 +55,7 @@ void main() {
   float diffuse = max(dot(normal, lightDir), 0.0);
   float specular = pow(max(dot(reflect(-lightDir, normal), vec3(0.0, 0.0, 1.0)), 0.0), 50.0);
 
-  vec3 base = texture2D(uTiles, uv * 3.0).rgb * vec3(0.72, 0.9, 1.0);
+  vec3 base = texture2D(uTiles, uv).rgb * vec3(0.72, 0.9, 1.0);
   vec3 color = base * (0.55 + 0.45 * diffuse) + vec3(1.0) * specular;
 
   gl_FragColor = vec4(color, 1.0);
